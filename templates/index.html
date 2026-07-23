@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food Recommendation System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .hero {
+            background: linear-gradient(
+                rgba(0,0,0,0.45),
+                rgba(0,0,0,0.45)
+            ),
+            url("https://images.unsplash.com/photo-1504674900247-0877df9cc836");
+
+            background-size: cover;
+            background-position: center;
+            padding: 80px 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-box h2,
+        .form-box .form-subtitle,
+        .form-box button {
+            grid-column: 1 / -1;
+        }
+
+        .form-box h2 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e64a19;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            margin: 30px 0 20px;
+            text-align: center;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .search-box input:focus {
+            border-color: #ff5722;
+        }
+
+        /* RESULTS */
+
+        #results {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .food-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            text-align: left;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .food-card h3 {
+            color: #ff5722;
+            margin-bottom: 12px;
+            font-size: 22px;
+        }
+
+        .food-card p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .food-card p strong {
+            color: #333;
+        }
+
+        /* ADD TO CART */
+
+        .add-cart-btn {
+            margin-top: 15px;
+            background: #28a745;
+            font-size: 16px;
+        }
+
+        .add-cart-btn:hover {
+            background: #218838;
+        }
+
+        /* CART */
+
+        .cart-box {
+            background: white;
+            padding: 25px;
+            margin-top: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .cart-box h2 {
+            color: #ff5722;
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            gap: 10px;
+        }
+
+        .cart-item span {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            width: auto;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .empty-cart {
+            color: #777;
+            font-size: 16px;
+        }
+
+        #totalPrice {
+            margin-top: 20px;
+            color: #333;
+            font-size: 22px;
+        }
+
+        .checkout-btn {
+            margin-top: 15px;
+            background: #ff5722;
+        }
+
+        .checkout-btn:hover {
+            background: #e64a19;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .form-box {
+                grid-template-columns: 1fr;
+            }
+
+            .form-box h2,
+            .form-box .form-subtitle,
+            .form-box button {
+                grid-column: auto;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero {
+                padding: 50px 20px;
+            }
+
+            #results {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .remove-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HERO SECTION -->
+
+        <div class="hero">
+
+            <h1>🍴 Find Your Perfect Meal</h1>
+
+            <p>
+                Discover delicious food recommendations based on your taste
+            </p>
+
+        </div>
+
+
+        <!-- PREFERENCE FORM -->
+
+        <div class="form-box">
+
+            <h2>🍽️ Select Your Food Preferences</h2>
+
+            <p class="form-subtitle">
+
+                Tell us what you like, and we'll find the perfect food for you!
+
+            </p>
+
+
+            <div class="form-group">
+
+                <label>Select Cuisine</label>
+
+                <select id="cuisine">
+
+                    <option value="Indian">Indian</option>
+                    <option value="Italian">Italian</option>
+                    <option value="American">American</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="South Indian">South Indian</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Select Diet</label>
+
+                <select id="diet">
+
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Non-Vegetarian">Non-Vegetarian</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Select Spice Level</label>
+
+                <select id="spice_level">
+
+                    <option value="Mild">Mild</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Spicy">Spicy</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Select Meal Type</label>
+
+                <select id="meal_type">
+
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+
+                </select>
+
+            </div>
+
+
+            <button onclick="getRecommendations()">
+
+                Get Food Recommendations 🍽️
+
+            </button>
+
+        </div>
+
+
+        <!-- SEARCH BOX -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchFood"
+                placeholder="🔍 Search your favorite food..."
+                onkeyup="searchFood()"
+            >
+
+        </div>
+
+
+        <!-- FOOD RESULTS -->
+
+        <div id="results"></div>
+
+
+        <!-- CART -->
+
+        <div class="cart-box">
+
+            <h2>
+
+                🛒 My Cart
+                (<span id="cartCount">0</span>)
+
+            </h2>
+
+
+            <div id="cartItems">
+
+                <p class="empty-cart">
+
+                    Your cart is empty.
+
+                </p>
+
+            </div>
+
+
+            <h3 id="totalPrice">
+
+                Total: ₹0
+
+            </h3>
+
+
+            <button
+                class="checkout-btn"
+                onclick="placeOrder()">
+
+                🧾 Place Order
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // CART ARRAY
+
+        let cart = [];
+
+
+        // GET RECOMMENDATIONS
+
+        async function getRecommendations() {
+
+            const cuisine =
+                document.getElementById("cuisine").value;
+
+            const diet =
+                document.getElementById("diet").value;
+
+            const spice_level =
+                document.getElementById("spice_level").value;
+
+            const meal_type =
+                document.getElementById("meal_type").value;
+
+
+            const url =
+                `/recommend?cuisine=${encodeURIComponent(cuisine)}&diet=${encodeURIComponent(diet)}&spice_level=${encodeURIComponent(spice_level)}&meal_type=${encodeURIComponent(meal_type)}`;
+
+
+            const response =
+                await fetch(url);
+
+
+            const data =
+                await response.json();
+
+
+            const resultsDiv =
+                document.getElementById("results");
+
+
+            resultsDiv.innerHTML = "";
+
+
+            data.recommendations.forEach(food => {
+
+                resultsDiv.innerHTML += `
+
+                    <div class="food-card">
+
+                        <img
+                            src="/static/images/${food.food_name.toLowerCase().replace(/ /g, "_")}.jpg"
+                            alt="${food.food_name}"
+                        >
+
+
+                        <h3>
+
+                            🍽️ ${food.food_name}
+
+                        </h3>
+
+
+                        <p>
+
+                            <strong>Cuisine:</strong>
+                            ${food.cuisine}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Type:</strong>
+                            ${food.food_type}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Price:</strong>
+                            ₹${food.price}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Rating:</strong>
+                            ⭐ ${food.rating}
+
+                        </p>
+
+
+                        <button
+                            class="add-cart-btn"
+                            onclick='addToCart(${JSON.stringify(food)})'>
+
+                            🛒 Add to Cart
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            document.getElementById("searchFood").value = "";
+
+        }
+
+
+        // SEARCH FOOD
+
+        function searchFood() {
+
+            const searchText =
+                document
+                .getElementById("searchFood")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+            const foodCards =
+                document.querySelectorAll(".food-card");
+
+
+            foodCards.forEach(card => {
+
+                const foodName =
+                    card
+                    .querySelector("h3")
+                    .textContent
+                    .toLowerCase()
+                    .replace("🍽️", "")
+                    .trim();
+
+
+                if (foodName.includes(searchText)) {
+
+                    card.style.display = "";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        // ADD TO CART
+
+        function addToCart(food) {
+
+            cart.push(food);
+
+            displayCart();
+
+            alert(
+                food.food_name +
+                " added to cart! 🛒"
+            );
+
+        }
+
+
+        // DISPLAY CART
+
+        function displayCart() {
+
+            const cartItems =
+                document.getElementById("cartItems");
+
+            const cartCount =
+                document.getElementById("cartCount");
+
+            const totalPrice =
+                document.getElementById("totalPrice");
+
+
+            cartCount.innerText =
+                cart.length;
+
+
+            if (cart.length === 0) {
+
+                cartItems.innerHTML = `
+
+                    <p class="empty-cart">
+
+                        Your cart is empty.
+
+                    </p>
+
+                `;
+
+                totalPrice.innerText =
+                    "Total: ₹0";
+
+                return;
+
+            }
+
+
+            cartItems.innerHTML = "";
+
+
+            let total = 0;
+
+
+            cart.forEach((food, index) => {
+
+                total += Number(food.price);
+
+
+                cartItems.innerHTML += `
+
+                    <div class="cart-item">
+
+                        <span>
+
+                            🍽️ ${food.food_name}
+                            - ₹${food.price}
+
+                        </span>
+
+
+                        <button
+                            class="remove-btn"
+                            onclick="removeFromCart(${index})">
+
+                            Remove
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            totalPrice.innerText =
+                "Total: ₹" + total;
+
+        }
+
+
+        // REMOVE FROM CART
+
+        function removeFromCart(index) {
+
+            cart.splice(index, 1);
+
+            displayCart();
+
+        }
+
+
+        // PLACE ORDER
+
+        function placeOrder() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty! 🛒"
+                );
+
+                return;
+
+            }
+
+
+            let total = 0;
+
+
+            cart.forEach(food => {
+
+                total += Number(food.price);
+
+            });
+
+
+            alert(
+
+                "🎉 Order placed successfully!\n\n" +
+
+                "Total Items: " +
+                cart.length +
+
+                "\nTotal Amount: ₹" +
+                total
+
+            );
+
+
+            cart = [];
+
+
+            displayCart();
+
+        }
+
+    </script>
+
+</body>
+
+</html>

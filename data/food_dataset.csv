@@ -1,0 +1,16 @@
+food_name,cuisine,food_type,diet,spice_level,price,meal_type,rating
+Pizza,Italian,Main Course,Vegetarian,Medium,250,Dinner,4.5
+Burger,American,Fast Food,Non-Vegetarian,Medium,150,Lunch,4.2
+Veg Biryani,Indian,Main Course,Vegetarian,Spicy,180,Lunch,4.6
+Chicken Biryani,Indian,Main Course,Non-Vegetarian,Spicy,250,Lunch,4.8
+Pasta,Italian,Main Course,Vegetarian,Medium,200,Dinner,4.3
+Paneer Tikka,Indian,Starter,Vegetarian,Spicy,220,Dinner,4.5
+Masala Dosa,South Indian,Breakfast,Vegetarian,Medium,100,Breakfast,4.7
+Idli,South Indian,Breakfast,Vegetarian,Mild,80,Breakfast,4.4
+Chicken Burger,American,Fast Food,Non-Vegetarian,Medium,220,Lunch,4.3
+French Fries,American,Fast Food,Vegetarian,Mild,120,Snack,4.1
+Chole Bhature,Indian,Main Course,Vegetarian,Spicy,150,Lunch,4.6
+Fried Rice,Chinese,Main Course,Vegetarian,Medium,160,Dinner,4.2
+Chicken Noodles,Chinese,Main Course,Non-Vegetarian,Spicy,200,Dinner,4.4
+Momos,Chinese,Snack,Vegetarian,Medium,120,Snack,4.5
+Sandwich,American,Snack,Vegetarian,Mild,100,Breakfast,4.0

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Favorites - Food Recommendation</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            color: #333;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: #ff7043;
+            color: white;
+            padding: 16px 6%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .home-btn {
+            background: white;
+            color: #ff7043 !important;
+        }
+
+        .logout-btn {
+            background: #e91e63;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+
+        /* TITLE */
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #666;
+            font-size: 16px;
+        }
+
+
+        /* FAVORITES GRID */
+
+        .favorites-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        /* FOOD CARD */
+
+        .food-card {
+            background: white;
+
+            padding: 25px 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.1);
+
+            text-align: center;
+
+            transition: 0.3s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+        }
+
+
+        .food-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+
+        .food-name {
+            font-size: 20px;
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* REMOVE BUTTON */
+
+        .remove-btn {
+            width: 100%;
+
+            padding: 10px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #e91e63;
+
+            color: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #c2185b;
+        }
+
+
+        /* EMPTY MESSAGE */
+
+        .empty-box {
+            background: white;
+
+            padding: 40px 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.1);
+
+            text-align: center;
+        }
+
+        .empty-box .emoji {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .empty-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-box p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+
+        /* BACK BUTTON */
+
+        .back-btn {
+            display: block;
+
+            width: fit-content;
+
+            margin: 35px auto 0;
+
+            padding: 12px 25px;
+
+            background: #ff7043;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            background: #e85d32;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 60px;
+
+            background: #333;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+            nav {
+                flex-direction: column;
+
+                gap: 12px;
+
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+
+                flex-wrap: wrap;
+            }
+
+            .container {
+                margin: 20px auto;
+            }
+
+            .title h1 {
+                font-size: 27px;
+            }
+
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            🍴 Food Recommendation
+        </div>
+
+
+        <div class="nav-links">
+
+            <span>
+                Welcome, {{ username }} 👋
+            </span>
+
+            <a
+                href="/"
+                class="home-btn"
+            >
+                🏠 Home
+            </a>
+
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            <h1>
+                ❤️ My Favorite Foods
+            </h1>
+
+            <p>
+                Your saved favorite foods
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= FAVORITES ================= -->
+
+        {% if favorites %}
+
+            <div class="favorites-grid">
+
+
+                {% for food in favorites %}
+
+
+                    <div class="food-card">
+
+
+                        <div class="food-icon">
+                            🍽️
+                        </div>
+
+
+                        <div class="food-name">
+                            {{ food.food_name }}
+                        </div>
+
+
+                        <!-- REMOVE FORM -->
+
+                        <form
+                            action="/remove-favorite"
+                            method="post"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="favorite_id"
+                                value="{{ food.id }}"
+                            >
+
+
+                            <button
+                                type="submit"
+                                class="remove-btn"
+                            >
+                                ❌ Remove from Favorites
+                            </button>
+
+                        </form>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- EMPTY FAVORITES -->
+
+            <div class="empty-box">
+
+                <div class="emoji">
+                    💔
+                </div>
+
+                <h2>
+                    No Favorite Foods Yet
+                </h2>
+
+                <p>
+                    Go back to the home page
+                    and add your favorite foods.
+                </p>
+
+                <a
+                    href="/"
+                    class="back-btn"
+                >
+                    🍽️ Find Food
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+        <!-- BACK BUTTON -->
+
+        {% if favorites %}
+
+            <a
+                href="/"
+                class="back-btn"
+            >
+                ← Back to Food Recommendations
+            </a>
+
+        {% endif %}
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Food Recommendation System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

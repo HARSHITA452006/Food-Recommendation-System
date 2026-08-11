@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Order Successful</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8f4;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 25px;
+        }
+
+        .success-box {
+
+            background: white;
+
+            width: 100%;
+            max-width: 650px;
+
+            padding: 40px 30px;
+
+            border-radius: 22px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.10);
+        }
+
+        .icon {
+
+            width: 90px;
+            height: 90px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 50px;
+        }
+
+        h1 {
+
+            color: #2e7d32;
+
+            margin-bottom: 12px;
+
+            font-size: 30px;
+        }
+
+        .message {
+
+            color: #666;
+
+            font-size: 16px;
+
+            margin-bottom: 25px;
+        }
+
+        .order-info {
+
+            background: #fff8f4;
+
+            padding: 22px;
+
+            border-radius: 15px;
+
+            text-align: left;
+
+            margin-bottom: 25px;
+        }
+
+        .customer-info {
+
+            margin-bottom: 20px;
+
+            line-height: 1.8;
+
+            color: #444;
+        }
+
+        .customer-info strong {
+
+            color: #333;
+        }
+
+        .section-title {
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+
+            color: #333;
+        }
+
+        .order-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        .food-name {
+
+            font-weight: bold;
+
+            color: #333;
+        }
+
+        .quantity {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-left: 5px;
+        }
+
+        .item-price {
+
+            font-weight: bold;
+
+            color: #ff5722;
+
+            white-space: nowrap;
+        }
+
+        .total {
+
+            margin-top: 20px;
+
+            padding-top: 15px;
+
+            border-top: 2px solid #eee;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            color: #ff5722;
+        }
+
+        .home-btn {
+
+            display: inline-block;
+
+            padding: 14px 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7043,
+                    #ff5722
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .home-btn:hover {
+
+            background: #e64a19;
+
+            transform: translateY(-1px);
+        }
+
+        .success-note {
+
+            margin-top: 18px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .success-box {
+
+                padding: 30px 18px;
+
+                border-radius: 18px;
+            }
+
+            h1 {
+
+                font-size: 24px;
+            }
+
+            .order-item {
+
+                align-items: flex-start;
+            }
+
+            .total {
+
+                font-size: 20px;
+            }
+
+            .home-btn {
+
+                width: 100%;
+
+                padding: 13px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="success-box">
+
+
+    <!-- SUCCESS ICON -->
+
+    <div class="icon">
+
+        ✅
+
+    </div>
+
+
+    <!-- TITLE -->
+
+    <h1>
+
+        Order Placed Successfully!
+
+    </h1>
+
+
+    <p class="message">
+
+        Thank you for your order,
+        <strong>{{ order["full_name"] }}</strong>! 🎉
+
+    </p>
+
+
+    <!-- ORDER INFORMATION -->
+
+    <div class="order-info">
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div class="customer-info">
+
+            <p>
+                <strong>👤 Name:</strong>
+                {{ order["full_name"] }}
+            </p>
+
+            <p>
+                <strong>📞 Phone:</strong>
+                {{ order["phone"] }}
+            </p>
+
+            <p>
+                <strong>📍 Address:</strong>
+                {{ order["address"] }}
+            </p>
+
+        </div>
+
+
+        <!-- ORDERED FOODS -->
+
+        <div class="section-title">
+
+            🍽️ Ordered Foods
+
+        </div>
+
+
+        {% for item in order["items"] %}
+
+
+        <div class="order-item">
+
+
+            <div>
+
+                <span class="food-name">
+
+                    {{ item["food_name"] }}
+
+                </span>
+
+                <span class="quantity">
+
+                    × {{ item["quantity"] }}
+
+                </span>
+
+            </div>
+
+
+            <div class="item-price">
+
+                ₹{{ item["price"] * item["quantity"] }}
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+        <!-- TOTAL -->
+
+        <div class="total">
+
+            <span>
+                Total
+            </span>
+
+            <span>
+                ₹{{ order["total"] }}
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- HOME BUTTON -->
+
+    <a
+        href="/"
+        class="home-btn"
+    >
+
+        🍽️ Continue Shopping
+
+    </a>
+
+
+    <p class="success-note">
+
+        Your order has been received successfully.
+
+    </p>
+
+
+</div>
+
+
+</body>
+
+</html>

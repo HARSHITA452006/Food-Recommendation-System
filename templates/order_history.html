@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Order History</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8f4;
+            color: #333;
+        }
+
+        nav {
+            background: linear-gradient(
+                135deg,
+                #ff7043,
+                #ff5722
+            );
+
+            color: white;
+            padding: 16px 6%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 14px;
+            margin-top: 7px;
+        }
+
+        .status {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .order-details {
+            margin-top: 18px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .total {
+            margin-top: 15px;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 20px;
+            font-weight: bold;
+
+            color: #ff5722;
+        }
+
+        .view-btn {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            padding: 10px 18px;
+
+            background: #ff5722;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+        }
+
+        .view-btn:hover {
+            background: #e64a19;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 50px 20px;
+
+            border-radius: 16px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #777;
+        }
+
+        .home-btn {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 12px 20px;
+
+            background: #ff5722;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                justify-content: center;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .total {
+                font-size: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav>
+
+    <div class="logo">
+        🍴 Food Recommendation
+    </div>
+
+    <div>
+
+        <a href="/">
+            🏠 Home
+        </a>
+
+        <a href="/cart">
+            🛒 Cart
+        </a>
+
+        <a href="/favorites">
+            ❤️ Favorites
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ORDER HISTORY -->
+
+<div class="container">
+
+    <h1>
+        📋 My Order History
+    </h1>
+
+
+    {% if orders %}
+
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+
+            <div class="order-header">
+
+
+                <div>
+
+                    <div class="order-id">
+
+                        🧾 Order #{{ order.id }}
+
+                    </div>
+
+
+                    <div class="order-date">
+
+                        📅 {{ order.order_date }}
+
+                    </div>
+
+                </div>
+
+
+                <div class="status">
+
+                    ✅ {{ order.status }}
+
+                </div>
+
+
+            </div>
+
+
+            <div class="order-details">
+
+                <p>
+                    👤
+                    <strong>Name:</strong>
+                    {{ order.full_name }}
+                </p>
+
+                <p>
+                    📞
+                    <strong>Phone:</strong>
+                    {{ order.phone }}
+                </p>
+
+                <p>
+                    📍
+                    <strong>Address:</strong>
+                    {{ order.address }}
+                </p>
+
+            </div>
+
+
+            <div class="total">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <span>
+                    ₹{{ order.total }}
+                </span>
+
+            </div>
+
+
+            <a
+                href="/order-details/{{ order.id }}"
+                class="view-btn"
+            >
+                👀 View Order
+            </a>
+
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <h2>
+                📦 No Orders Yet
+            </h2>
+
+            <p>
+                Your completed orders will appear here.
+            </p>
+
+            <a
+                href="/"
+                class="home-btn"
+            >
+                🍽️ Start Shopping
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>
